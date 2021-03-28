@@ -69,15 +69,19 @@ header {
   visibility: hidden;
 }
 
+#card-criteria.show {
+  visibility: visible;
+}
+
 .criterion {
   /* margin-bottom: 10px;
   padding-bottom: 20px; */
   position: relative;
 }
 
-.criterion #password-length {
+/* .criterion #password-length {
   width: 100%;
-}
+} */
 
 .criterion .small {
   position: absolute;
@@ -89,6 +93,7 @@ header {
 .none-lbl {
   color: black;
   font-style: italic;
+  visibility: hidden;
 }
 
 .error-lbl {

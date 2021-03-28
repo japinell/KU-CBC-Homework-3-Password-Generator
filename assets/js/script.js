@@ -6,10 +6,12 @@ const specialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-var criteriaBtn = document.querySelector("#criteria");
+var criteriaShowBtn = document.querySelector("#criteria-show");
+var criteriaHideBtn = document.querySelector("#criteria-hide");
 var criteriaObj = document.querySelector("#card-criteria");
 
 var passLenObj = document.getElementById("password-length");
+var passSpecNbrObj = document.getElementById("special-number");
 var lowerCharSelObj = document.getElementById("lowercase");
 var upperCharSelObj = document.getElementById("uppercase");
 var numberCharSelObj = document.getElementById("number");
@@ -17,21 +19,18 @@ var specialCharSelObj = document.getElementById("special");
 var errorLbl = document.getElementById("error-lbl");
 
 var passLenVal;
-var lowerCharSelVal;
-var upperCharSelVal;
-var numberCharSelVal;
-var specialCharSelVal;
 
 // Read input criteria
 function readInputs() {
   passLenVal = passLenObj.value.trim();
-  lowerCharSelVal = lowerCharSelObj.value;
-  upperCharSelVal = upperCharSelObj.value;
-  numberCharSelVal = numberCharSelObj.value;
-  specialCharSelVal = specialCharSelObj.value;
+  passSpecNbrVal = passSpecNbrObj.value.trim();
+  lowerCharSel = lowerCharSelObj.checked == true;
+  upperCharSel = upperCharSelObj.checked == true;
+  numberCharSel = numberCharSelObj.checked == true;
+  specialCharSel = specialCharSelObj.checked == true;
 }
 
-// Check if passLenVal is a number
+// Check if password length  is a number
 // TODO: This function could be converted to accept an string to be evaluated
 function isValidNumber() {
   var l = passLenVal.length;
@@ -55,6 +54,15 @@ function isValidNumber() {
   return isNumber;
 }
 
+// Check if character types have been selected
+function isCharTypesChecked() {
+  if (lowerCharSel || upperCharSel || numberCharSel || specialCharSel) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // Check password length
 function isValidLength() {
   if (passLenVal > 0) {
@@ -76,37 +84,52 @@ function isValidLength() {
   }
 }
 
+// Validate length and selection of character types
+function validateInputs() {
+  // Validate password length
+  if (isValidLength()) {
+    // Validate the selection of special characters
+    if (isCharTypesChecked()) {
+      showPasswordSuccess();
+    } else {
+      showPasswordError("You must check at least one character type");
+    }
+  } else {
+    showPasswordError("Password length must be a number between 8 and 128");
+  }
+}
+
 // Show error
-function showPasswordError() {
-  passLenObj.style.border = "1px solid red";
+function showPasswordError(message) {
   errorLbl.className = "error-lbl";
-  errorLbl.innerHTML = "Password length must be a number between 8 and 128";
+  errorLbl.innerHTML = message;
   errorLbl.visibility = "visible";
+
+  console.log(criteriaObj.classList);
+
+  if (!criteriaObj.classList.contains("show")) {
+    criteriaObj.classList.toggle("show");
+  }
 }
 
 // Show success
 function showPasswordSuccess() {
-  passLenObj.style.border = "1px solid green";
   errorLbl.className = "success-lbl";
-  errorLbl.innerHTML = "Password length is valid";
+  errorLbl.innerHTML = "";
 }
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
-  //var passwordText = document.querySelector("#password");
+  if (validateInputs()) {
+    var password = generatePassword();
+    var passwordText = document.querySelector("#password");
 
-  //passwordText.value = password;
+    passwordText.value = password;
+  }
 }
 
 // Generate password
-function generatePassword() {
-  if (isValidLength()) {
-    showPasswordSuccess();
-  } else {
-    showPasswordError();
-  }
-}
+function generatePassword() {}
 
 // Add event listener to generate button
 //generateBtn.addEventListener("click", writePassword);
@@ -115,8 +138,11 @@ generateBtn.addEventListener("click", function (e) {
   writePassword();
 });
 
-criteriaBtn.addEventListener("click", function (e) {
-  console.log("Visibility :>> " + criteriaObj.style.visibility);
-  criteriaObj.style.visibility = "visible";
-  console.log("Visibility :>> " + criteriaObj.style.visibility);
+criteriaShowBtn.addEventListener("click", function (e) {
+  //criteriaObj.style.visibility = "visible";
+  criteriaObj.classList.toggle("show");
+});
+
+criteriaHideBtn.addEventListener("click", function (e) {
+  criteriaObj.classList.toggle("show");
 });
