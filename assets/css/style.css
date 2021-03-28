@@ -15,12 +15,22 @@ body,
 body {
   font-family: sans-serif;
   background-color: #f9fbfd;
+
+  /* RP: 03/27/21 
+     Converted to flex
+  */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
 }
 
 .wrapper {
   padding-top: 30px;
   padding-left: 20px;
   padding-right: 20px;
+  /* width: 600px; */
 }
 
 header {
@@ -40,6 +50,7 @@ header {
   margin: 0 auto;
   max-width: 800px;
   padding: 30px 40px;
+  width: 700px;
 }
 
 .card-header::after {
@@ -52,6 +63,42 @@ header {
 
 .card-body {
   min-height: 100px;
+}
+
+#card-criteria {
+  visibility: hidden;
+}
+
+.criterion {
+  /* margin-bottom: 10px;
+  padding-bottom: 20px; */
+  position: relative;
+}
+
+.criterion #password-length {
+  width: 100%;
+}
+
+.criterion .small {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
+}
+
+.none-lbl {
+  color: black;
+  font-style: italic;
+}
+
+.error-lbl {
+  color: red;
+  font-style: italic;
+}
+
+.success-lbl {
+  color: green;
+  font-style: italic;
 }
 
 .card-footer {
