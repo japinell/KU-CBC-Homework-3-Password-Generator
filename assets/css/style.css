@@ -1,3 +1,8 @@
+:root {
+  --redish: hsl(360, 91%, 36%);
+  --greenish: rgb(14, 59, 14);
+}
+
 *,
 *::before,
 *::after {
@@ -96,12 +101,12 @@ header {
 }
 
 .error-lbl {
-  color: red;
+  color: var(--redish);
   font-style: italic;
 }
 
 .success-lbl {
-  color: green;
+  color: var(--greenish);
   font-style: italic;
 }
 
@@ -142,6 +147,12 @@ header {
 button[disabled] {
   cursor: default;
   background: #c0c7cf;
+}
+
+.btn:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  background-color: #555555;
+  color: white;
 }
 
 .float-right {
