@@ -35,14 +35,24 @@
         </div>
         <div class="criterion">
           <label for="password-length">Password Length:</label>
-          <input type="text" id="password-length" />
+          <input
+            type="text"
+            id="password-length"
+            placeholder="Password Length"
+          />
         </div>
         <div class="criterion">
-          <label for="special-number">Number of Special Characters:</label>
-          <input type="text" id="special-number" />
+          <label for="special-number"
+            >Minimum Number of Character Types in Password:</label
+          >
+          <input
+            type="text"
+            id="types-number"
+            placeholder="Number of Character Types"
+          />
         </div>
         <label for="character-types">Character Types:</label>
-        <div class="criterion">
+        <div class="criterion character-types">
           <label for="lowercase">Lowercase</label>
           <input
             type="checkbox"
@@ -51,7 +61,7 @@
             value="Lowercase"
           />
         </div>
-        <div class="criterion">
+        <div class="criterion character-types">
           <label for="uppercase">Uppercase</label>
           <input
             type="checkbox"
@@ -60,11 +70,11 @@
             value="Uppercase"
           />
         </div>
-        <div class="criterion">
+        <div class="criterion character-types">
           <label for="number">Numbers</label>
           <input type="checkbox" id="number" name="number" value="Number" />
         </div>
-        <div class="criterion">
+        <div class="criterion character-types">
           <label for="special">Special Characters</label>
           <input type="checkbox" id="special" name="special" value="Special" />
         </div>

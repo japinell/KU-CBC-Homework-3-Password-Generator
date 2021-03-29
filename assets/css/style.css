@@ -83,6 +83,10 @@ header {
   width: 100%;
 } */
 
+.criterion.character-types {
+  padding: 5px 0px 0px 15px;
+}
+
 .criterion .small {
   position: absolute;
   bottom: 0;

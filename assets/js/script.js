@@ -11,7 +11,7 @@ var criteriaHideBtn = document.querySelector("#criteria-hide");
 var criteriaObj = document.querySelector("#card-criteria");
 
 var passLenObj = document.getElementById("password-length");
-var passSpecNbrObj = document.getElementById("special-number");
+var passSpecNbrObj = document.getElementById("types-number");
 var lowerCharSelObj = document.getElementById("lowercase");
 var upperCharSelObj = document.getElementById("uppercase");
 var numberCharSelObj = document.getElementById("number");
@@ -22,8 +22,10 @@ var passLenVal;
 
 // Read input criteria
 function readInputs() {
+  //
   passLenVal = passLenObj.value.trim();
   passSpecNbrVal = passSpecNbrObj.value.trim();
+  //
   lowerCharSel = lowerCharSelObj.checked == true;
   upperCharSel = upperCharSelObj.checked == true;
   numberCharSel = numberCharSelObj.checked == true;
@@ -32,14 +34,14 @@ function readInputs() {
 
 // Check if password length  is a number
 // TODO: This function could be converted to accept an string to be evaluated
-function isValidNumber() {
-  var l = passLenVal.length;
+function isValidNumber(input) {
+  var l = input.length;
   var c;
   isNumber = false;
 
   // Parse the input character by character
   for (var i = 0; i < l; i++) {
-    c = passLenVal.charCodeAt(i);
+    c = input.charCodeAt(i);
 
     // Check if the unicode character is between 48 and 57
     // 48 = '0' ... 57 = '9'
@@ -64,18 +66,31 @@ function isCharTypesChecked() {
 }
 
 // Check password length
-function isValidLength() {
-  if (passLenVal > 0) {
-    // Check if passLenVal is a valid number
-    if (isValidNumber()) {
-      // Convert passLenVal to numeric
-      passLenVal = parseInt(passLenVal);
+function isValidPasswordLength() {
+  // Check if password length is a valid number
+  if (isValidNumber(passLenVal)) {
+    passLenVal = parseInt(passLenVal);
 
-      if (passLenVal >= 8 && passLenVal <= 128) {
-        return true;
-      } else {
-        return false;
-      }
+    // Validate that the password length is a number between 8 and 128
+    if (passLenVal >= 8 && passLenVal <= 128) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+// Check number of character types
+function isValidNumberOfTypes() {
+  // Check if password length is a valid number
+  if (isValidNumber(passSpecNbrVal)) {
+    passSpecNbrVal = parseInt(passSpecNbrVal);
+
+    // Validate that the number of character types is a number between 1 and 4
+    if (passSpecNbrVal >= 1 && passSpecNbrVal <= 4) {
+      return true;
     } else {
       return false;
     }
@@ -86,26 +101,37 @@ function isValidLength() {
 
 // Validate length and selection of character types
 function validateInputs() {
+  //
+  var validInputs = false;
+
   // Validate password length
-  if (isValidLength()) {
-    // Validate the selection of special characters
-    if (isCharTypesChecked()) {
-      showPasswordSuccess();
+  if (isValidPasswordLength()) {
+    // Validate the number of character types
+    if (isValidNumberOfTypes()) {
+      // Validate the selection of special characters
+      if (isCharTypesChecked()) {
+        validInputs = true;
+        showSuccess();
+      } else {
+        showError("You must check at least one character type");
+      }
     } else {
-      showPasswordError("You must check at least one character type");
+      showError(
+        "The number of character types must be a number between 1 and 4"
+      );
     }
   } else {
-    showPasswordError("Password length must be a number between 8 and 128");
+    showError("Password length must be a number between 8 and 128");
   }
+
+  return validInputs;
 }
 
 // Show error
-function showPasswordError(message) {
+function showError(message) {
   errorLbl.className = "error-lbl";
   errorLbl.innerHTML = message;
   errorLbl.visibility = "visible";
-
-  console.log(criteriaObj.classList);
 
   if (!criteriaObj.classList.contains("show")) {
     criteriaObj.classList.toggle("show");
@@ -113,7 +139,7 @@ function showPasswordError(message) {
 }
 
 // Show success
-function showPasswordSuccess() {
+function showSuccess() {
   errorLbl.className = "success-lbl";
   errorLbl.innerHTML = "";
 }
@@ -129,11 +155,87 @@ function writePassword() {
 }
 
 // Generate password
-function generatePassword() {}
+function generatePassword() {
+  //
+  var nCharTypes = 0; // Number of character types
+  var rndIndex = 0;
+  var rndCharType = 0;
+  var arrCharTypes = [];
+  var arrPassword = [];
+  var strPassword = "";
+
+  // Push the selection of character types into an array
+  if (lowerCharSel) {
+    arrCharTypes.push(0);
+    nCharTypes++;
+  }
+
+  if (upperCharSel) {
+    arrCharTypes.push(1);
+    nCharTypes++;
+  }
+
+  if (numberCharSel) {
+    arrCharTypes.push(2);
+    nCharTypes++;
+  }
+
+  if (specialCharSel) {
+    arrCharTypes.push(3);
+    nCharTypes++;
+  }
+
+  //
+  for (var i = 0; i < passLenVal; i++) {
+    // Generate a random number between 0 and nCharTypes
+    // 0 = lowercase
+    // 1 = uppercase
+    // 2 = number
+    // 3 = special character
+    rndCharType = Math.floor(Math.random() * nCharTypes);
+
+    // Case lowercase and uppercase
+    if (arrCharTypes[rndCharType] == 0 || arrCharTypes[rndCharType] == 1) {
+      // Generate a random number between 0 and 25
+      rndIndex = Math.floor(Math.random() * 26);
+
+      if (arrCharTypes[rndCharType] == 0) {
+        // Pick a lowercase character
+        arrPassword.push(lowerCharacters.charAt(rndIndex));
+      } else {
+        // Pick an uppercase character
+        arrPassword.push(upperCharacters.charAt(rndIndex));
+      }
+    } else if (arrCharTypes[rndCharType] == 2) {
+      // Generate a random number between 0 and 9
+      rndIndex = Math.floor(Math.random() * 10);
+
+      // Pick a number character
+      arrPassword.push(numberCharacters.charAt(rndIndex));
+    } else {
+      // Generate a random number between 0 and 29
+      rndIndex = Math.floor(Math.random() * 30);
+
+      // Pick an special character
+      arrPassword.push(specialCharacters.charAt(rndIndex));
+    }
+  }
+
+  // Convert the array into a string
+  arrPassword.forEach(function (key) {
+    strPassword += key;
+  });
+
+  return strPassword;
+}
 
 // Add event listener to generate button
 //generateBtn.addEventListener("click", writePassword);
 generateBtn.addEventListener("click", function (e) {
+  //
+  document.querySelector("#password").value = "";
+
+  //
   readInputs();
   writePassword();
 });
