@@ -30,7 +30,7 @@ body {
   padding-top: 30px;
   padding-left: 20px;
   padding-right: 20px;
-  /* width: 600px; */
+  width: 700px;
 }
 
 header {
@@ -50,7 +50,8 @@ header {
   margin: 0 auto;
   max-width: 800px;
   padding: 30px 40px;
-  width: 700px;
+  width: 100%;
+  /* width: 700px; */
 }
 
 .card-header::after {
@@ -73,15 +74,9 @@ header {
   visibility: visible;
 }
 
-.criterion {
-  /* margin-bottom: 10px;
-  padding-bottom: 20px; */
-  position: relative;
-}
-
-/* .criterion #password-length {
+.criterion #password-length {
   width: 100%;
-} */
+}
 
 .criterion.character-types {
   padding: 5px 0px 0px 15px;

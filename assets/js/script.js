@@ -11,7 +11,6 @@ var criteriaHideBtn = document.querySelector("#criteria-hide");
 var criteriaObj = document.querySelector("#card-criteria");
 
 var passLenObj = document.getElementById("password-length");
-var passSpecNbrObj = document.getElementById("types-number");
 var lowerCharSelObj = document.getElementById("lowercase");
 var upperCharSelObj = document.getElementById("uppercase");
 var numberCharSelObj = document.getElementById("number");
@@ -24,7 +23,6 @@ var passLenVal;
 function readInputs() {
   //
   passLenVal = passLenObj.value.trim();
-  passSpecNbrVal = passSpecNbrObj.value.trim();
   //
   lowerCharSel = lowerCharSelObj.checked == true;
   upperCharSel = upperCharSelObj.checked == true;
@@ -34,14 +32,14 @@ function readInputs() {
 
 // Check if password length  is a number
 // TODO: This function could be converted to accept an string to be evaluated
-function isValidNumber(input) {
-  var l = input.length;
+function isValidNumber() {
+  var l = passLenVal.length;
   var c;
   isNumber = false;
 
   // Parse the input character by character
   for (var i = 0; i < l; i++) {
-    c = input.charCodeAt(i);
+    c = passLenVal.charCodeAt(i);
 
     // Check if the unicode character is between 48 and 57
     // 48 = '0' ... 57 = '9'
@@ -68,28 +66,11 @@ function isCharTypesChecked() {
 // Check password length
 function isValidPasswordLength() {
   // Check if password length is a valid number
-  if (isValidNumber(passLenVal)) {
+  if (isValidNumber()) {
     passLenVal = parseInt(passLenVal);
 
     // Validate that the password length is a number between 8 and 128
     if (passLenVal >= 8 && passLenVal <= 128) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    return false;
-  }
-}
-
-// Check number of character types
-function isValidNumberOfTypes() {
-  // Check if password length is a valid number
-  if (isValidNumber(passSpecNbrVal)) {
-    passSpecNbrVal = parseInt(passSpecNbrVal);
-
-    // Validate that the number of character types is a number between 1 and 4
-    if (passSpecNbrVal >= 1 && passSpecNbrVal <= 4) {
       return true;
     } else {
       return false;
@@ -106,22 +87,15 @@ function validateInputs() {
 
   // Validate password length
   if (isValidPasswordLength()) {
-    // Validate the number of character types
-    if (isValidNumberOfTypes()) {
-      // Validate the selection of special characters
-      if (isCharTypesChecked()) {
-        validInputs = true;
-        showSuccess();
-      } else {
-        showError("You must check at least one character type");
-      }
+    // Validate the selection of special characters
+    if (isCharTypesChecked()) {
+      validInputs = true;
+      showSuccess();
     } else {
-      showError(
-        "The number of character types must be a number between 1 and 4"
-      );
+      showError("You must check at least one character type");
     }
   } else {
-    showError("Password length must be a number between 8 and 128");
+    showError("Password length must be an integer number between 8 and 128");
   }
 
   return validInputs;
@@ -241,7 +215,6 @@ generateBtn.addEventListener("click", function (e) {
 });
 
 criteriaShowBtn.addEventListener("click", function (e) {
-  //criteriaObj.style.visibility = "visible";
   criteriaObj.classList.toggle("show");
 });
 
