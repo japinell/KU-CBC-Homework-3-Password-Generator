@@ -78,7 +78,7 @@ function readInputs() {
   //
   // At least one character type must be entered
   //
-  if (!lowerCharSel && !upperCharSel && !numberCharSel && !specialCharSel) {
+  if (!isCharTypesChecked()) {
     //
     alert(
       "Because no character type was selected, the password will contain Special characters"
