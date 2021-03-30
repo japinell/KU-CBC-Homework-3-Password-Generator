@@ -4,50 +4,114 @@ const upperCharacters = lowerCharacters.toUpperCase();
 const numberCharacters = "0123456789";
 const specialCharacters = "!#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 
+// Variables declaration
+var intPassLength;
+var lowerCharSel;
+var upperCharSel;
+var numberCharSel;
+var specialCharSel;
+
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-var criteriaShowBtn = document.querySelector("#criteria-show");
-var criteriaHideBtn = document.querySelector("#criteria-hide");
-var criteriaObj = document.querySelector("#card-criteria");
 
-var passLenObj = document.getElementById("password-length");
-var lowerCharSelObj = document.getElementById("lowercase");
-var upperCharSelObj = document.getElementById("uppercase");
-var numberCharSelObj = document.getElementById("number");
-var specialCharSelObj = document.getElementById("special");
-var errorLbl = document.getElementById("error-lbl");
+// Read the password length
+function readPasswordLength() {
+  //
+  intPassLength = prompt(
+    "Enter the password length, an integer number between 8 and 128: "
+  );
+  //
+  while (!isValidNumber() || !(intPassLength >= 8 && intPassLength <= 128)) {
+    alert("Password length must be an integer number between 8 and 128");
+    intPassLength = prompt(
+      "Enter the password length, an integer number between 8 and 128: "
+    );
+  }
+  //
+}
 
-var passLenVal;
+// Read the character types
+function readCharacterTypes(strMessage) {
+  //
+  var strCharType = prompt(strMessage).toUpperCase();
+  //
+  while (!(strCharType === "Y" || strCharType === "N")) {
+    //
+    alert("Password must contain at least one character type");
+    strCharType = prompt(strMessage).toUpperCase();
+    //
+  }
+  //
+  return strCharType;
+  //
+}
 
 // Read input criteria
 function readInputs() {
   //
-  passLenVal = passLenObj.value.trim();
+  readPasswordLength();
   //
-  lowerCharSel = lowerCharSelObj.checked == true;
-  upperCharSel = upperCharSelObj.checked == true;
-  numberCharSel = numberCharSelObj.checked == true;
-  specialCharSel = specialCharSelObj.checked == true;
+  lowerCharSel =
+    readCharacterTypes(
+      "Should the password include Lowercase characters -> Y = Yes, N = No? "
+    ) === "Y"
+      ? true
+      : false;
+  upperCharSel =
+    readCharacterTypes(
+      "Should the password include Uppercase characters -> Y = Yes, N = No? "
+    ) === "Y"
+      ? true
+      : false;
+  numberCharSel =
+    readCharacterTypes(
+      "Should the password include Number characters -> Y = Yes, N = No? "
+    ) === "Y"
+      ? true
+      : false;
+  specialCharSel =
+    readCharacterTypes(
+      "Should the password include Special characters -> Y = Yes, N = No? "
+    ) === "Y"
+      ? true
+      : false;
+  //
+  // At least one character type must be entered
+  //
+  if (!lowerCharSel && !upperCharSel && !numberCharSel && !specialCharSel) {
+    //
+    alert(
+      "Because no character type was selected, the password will contain Special characters"
+    );
+    //
+    specialCharSel = true;
+    //
+  }
 }
 
 // Check if password length  is a number
-// TODO: This function could be converted to accept an string to be evaluated
+// TODO: This function could be converted to accept a string to be evaluated
+//    Also, it could use regular expressions instead
 function isValidNumber() {
-  var l = passLenVal.length;
-  var c;
+  //
   isNumber = false;
+  //
+  if (!(intPassLength === null)) {
+    //
+    var c;
+    var l = intPassLength.length;
+    // Parse the input character by character
+    for (var i = 0; i < l; i++) {
+      c = intPassLength.charCodeAt(i);
 
-  // Parse the input character by character
-  for (var i = 0; i < l; i++) {
-    c = passLenVal.charCodeAt(i);
-
-    // Check if the unicode character is between 48 and 57
-    // 48 = '0' ... 57 = '9'
-    if (c >= 48 && c <= 57) {
-      isNumber = true;
-    } else {
-      isNumber = false;
-      return;
+      // Check if the unicode character is between 48 and 57
+      // 48 = '0' ... 57 = '9'
+      if (c >= 48 && c <= 57) {
+        isNumber = true;
+      } else {
+        isNumber = false;
+        return;
+      }
     }
   }
 
@@ -67,10 +131,11 @@ function isCharTypesChecked() {
 function isValidPasswordLength() {
   // Check if password length is a valid number
   if (isValidNumber()) {
-    passLenVal = parseInt(passLenVal);
+    //
+    intPassLength = parseInt(intPassLength);
 
     // Validate that the password length is a number between 8 and 128
-    if (passLenVal >= 8 && passLenVal <= 128) {
+    if (intPassLength >= 8 && intPassLength <= 128) {
       return true;
     } else {
       return false;
@@ -78,6 +143,7 @@ function isValidPasswordLength() {
   } else {
     return false;
   }
+  //
 }
 
 // Validate length and selection of character types
@@ -90,46 +156,16 @@ function validateInputs() {
     // Validate the selection of special characters
     if (isCharTypesChecked()) {
       validInputs = true;
-      showSuccess();
-    } else {
-      showError("You must check at least one character type");
     }
-  } else {
-    showError("Password length must be an integer number between 8 and 128");
   }
 
   return validInputs;
 }
 
-// Show error
-function showError(message) {
-  errorLbl.className = "error-lbl";
-  errorLbl.innerHTML = message;
-  errorLbl.visibility = "visible";
-
-  if (!criteriaObj.classList.contains("show")) {
-    criteriaObj.classList.toggle("show");
-  }
-}
-
-// Show success
-function showSuccess() {
-  errorLbl.className = "success-lbl";
-  errorLbl.innerHTML = "";
-}
-
-// Write password to the #password input
-function writePassword() {
-  if (validateInputs()) {
-    var password = generatePassword();
-    var passwordText = document.querySelector("#password");
-
-    passwordText.value = password;
-  }
-}
-
-// Generate password
+// Read inputs and generate password
 function generatePassword() {
+  //
+  readInputs();
   //
   var nCharTypes = 0; // Number of character types
   var rndIndex = 0;
@@ -160,7 +196,7 @@ function generatePassword() {
   }
 
   //
-  for (var i = 0; i < passLenVal; i++) {
+  for (var i = 0; i < intPassLength; i++) {
     // Generate a random number between 0 and nCharTypes
     // 0 = lowercase
     // 1 = uppercase
@@ -203,21 +239,13 @@ function generatePassword() {
   return strPassword;
 }
 
+// Write password to the #password input
+function writePassword() {
+  var password = generatePassword();
+  var passwordText = document.querySelector("#password");
+
+  passwordText.value = password;
+}
+
 // Add event listener to generate button
-//generateBtn.addEventListener("click", writePassword);
-generateBtn.addEventListener("click", function (e) {
-  //
-  document.querySelector("#password").value = "";
-
-  //
-  readInputs();
-  writePassword();
-});
-
-criteriaShowBtn.addEventListener("click", function (e) {
-  criteriaObj.classList.toggle("show");
-});
-
-criteriaHideBtn.addEventListener("click", function (e) {
-  criteriaObj.classList.toggle("show");
-});
+generateBtn.addEventListener("click", writePassword);

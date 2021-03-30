@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Password Generator</title>
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
     <div class="wrapper">
@@ -14,7 +14,7 @@
       </header>
       <div class="card">
         <div class="card-header">
-          <h2>Random Password</h2>
+          <h2>Generate a Password</h2>
         </div>
         <div class="card-body">
           <textarea
@@ -25,55 +25,10 @@
           ></textarea>
         </div>
         <div class="card-footer">
-          <button id="generate" class="btn"><span>Generate </span></button>
-          <button id="criteria-show" class="btn"><span>Criteria </span></button>
-        </div>
-      </div>
-      <div id="card-criteria" class="card">
-        <div class="card-header">
-          <h2>Password Criteria</h2>
-        </div>
-        <div class="criterion">
-          <label for="password-length">Password Length:</label>
-          <input
-            type="text"
-            id="password-length"
-            placeholder="Password Length"
-          />
-        </div>
-        <label for="character-types">Character Types:</label>
-        <div class="criterion character-types">
-          <label for="lowercase">Lowercase</label>
-          <input
-            type="checkbox"
-            id="lowercase"
-            name="lowercase"
-            value="Lowercase"
-          />
-        </div>
-        <div class="criterion character-types">
-          <label for="uppercase">Uppercase</label>
-          <input
-            type="checkbox"
-            id="uppercase"
-            name="uppercase"
-            value="Uppercase"
-          />
-        </div>
-        <div class="criterion character-types">
-          <label for="number">Numbers</label>
-          <input type="checkbox" id="number" name="number" value="Number" />
-        </div>
-        <div class="criterion character-types">
-          <label for="special">Special Characters</label>
-          <input type="checkbox" id="special" name="special" value="Special" />
-        </div>
-        <small id="error-lbl" class="none-lbl">Error message</small>
-        <div class="card-footer">
-          <button id="criteria-hide" class="btn"><span>Hide </span></button>
+          <button id="generate" class="btn">Generate Password</button>
         </div>
       </div>
     </div>
-    <script src="assets/js/script.js"></script>
+    <script src="./assets/js/script.js"></script>
   </body>
 </html>
